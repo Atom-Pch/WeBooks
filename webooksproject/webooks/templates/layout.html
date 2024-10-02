@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}WeBooks{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      {% block navbar %}
+      <div class="container-fluid bg-black">
+        <div class="px-10 flex justify-between items-center py-5 border-b">
+          <!-- Logo and Toggle Button -->
+          <div class="flex items-center space-x-4">
+            <div id="logo">
+              <a href="{% url 'home' %}" class="text-white font-bold text-3xl"
+                >WeBooks</a
+              >
+            </div>
+            <!-- Navbar Toggle Button for Offcanvas (Mobile) -->
+            <button
+              data-drawer-target="offcanvasNavbar"
+              aria-controls="offcanvasNavbar"
+              data-drawer-toggle="offcanvasNavbar"
+              class="text-white lg:hidden"
+            >
+              <svg
+                class="w-6 h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Search Form -->
+          <div class="hidden lg:flex lg:w-2/5 space-x-5">
+            <form
+              id="search-form"
+              action="book-list.html"
+              method="post"
+              class="flex w-full items-center bg-white border border-gray-300 rounded-full"
+            >
+              <input
+                type="text"
+                class="bg-transparent border-0 rounded-l-full pl-4 py-2 w-full text-gray-700 focus:outline-none"
+                placeholder="Find your favourite book!"
+              />
+              <button class="px-4 py-2 bg-gray-800 text-white rounded-r-full">
+                Search
+              </button>
+            </form>
+            <!-- Dropdown -->
+            <div class="relative flex items-center">
+              <button
+                id="dropdownDefaultButton"
+                data-dropdown-toggle="dropdown"
+                class="text-white uppercase font-semibold Dropdown inline-flex items-center"
+              >
+                Genres
+                <svg
+                  class="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+              <div
+                id="dropdown"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+              >
+                <ul
+                  class="absolute mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg group-hover:block"
+                  aria-labelledby="dropdownDefaultButton"
+                >
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Biography</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Fantasy</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Historical Fiction</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Horror</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Mystery</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Non-Fiction</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Romance</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Science Fiction</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="index.html"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Thriller</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Register & Login -->
+          <div class="flex space-x-10">
+            <a href="#" class="text-white uppercase font-semibold"
+              >Register</a
+            >
+            <a href="{% url 'login' %}" class="text-white uppercase font-semibold"
+              >Log in</a
+            >
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+    </header>
+
+    <!-- Main Content -->
+    <div class="container m-auto">
+      <div class="m-5">{% block content %}{% endblock %}</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+  </body>
+</html>
