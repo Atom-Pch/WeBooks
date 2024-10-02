@@ -16,7 +16,7 @@
   <body>
     <header>
       {% block navbar %}
-      <div class="container-fluid bg-black">
+      <div class="container-fluid bg-gray-900">
         <div class="px-10 flex justify-between items-center py-5 border-b">
           <!-- Logo and Toggle Button -->
           <div class="flex items-center space-x-4">
@@ -69,8 +69,8 @@
             <!-- Dropdown -->
             <div class="relative flex items-center">
               <button
-                id="dropdownDefaultButton"
-                data-dropdown-toggle="dropdown"
+                id="GenresDropdown"
+                data-dropdown-toggle="dropdownGenres"
                 class="text-white uppercase font-semibold Dropdown inline-flex items-center"
               >
                 Genres
@@ -91,12 +91,12 @@
                 </svg>
               </button>
               <div
-                id="dropdown"
+                id="dropdownGenres"
                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
               >
                 <ul
-                  class="absolute mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg group-hover:block"
-                  aria-labelledby="dropdownDefaultButton"
+                  class="absolute mt-2 w-40 left-10 bg-white text-gray-800 rounded-lg shadow-lg group-hover:block"
+                  aria-labelledby="GenresDropdown"
                 >
                   <li>
                     <a
@@ -167,21 +167,63 @@
           </div>
           <!-- Register & Login -->
           <div class="flex space-x-10">
-            <a href="#" class="text-white uppercase font-semibold"
-              >Register</a
-            >
-            <a href="{% url 'login' %}" class="text-white uppercase font-semibold"
+            {% if user.is_authenticated %}
+            <button
+                id="dropdownDefaultButton"
+                data-dropdown-toggle="dropdownLogout"
+                class="text-white uppercase font-semibold Dropdown inline-flex items-center"
+              >
+                {{ user.username }}
+                <svg
+                  class="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+              <div
+                id="dropdownLogout"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+              >
+                <ul
+                  class="absolute mt-2 w-36 bg-white text-gray-800 rounded-lg shadow-lg group-hover:block"
+                  aria-labelledby="dropdownDefaultButton"
+                >
+                  <li>
+                    <a
+                      href="{% url 'logout' %}"
+                      class="block px-4 py-2 hover:bg-gray-100"
+                      >Logout</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            {% else %}
+            <a href="#" class="text-white uppercase font-semibold">Register</a>
+            <a
+              href="{% url 'login' %}"
+              class="text-white uppercase font-semibold"
               >Log in</a
             >
+            {% endif %}
           </div>
         </div>
       </div>
-    {% endblock %}
+      {% endblock %}
     </header>
 
     <!-- Main Content -->
-    <div class="container m-auto">
-      <div class="m-5">{% block content %}{% endblock %}</div>
+    <div class="container-fluid">
+      <div>{% block content %}{% endblock %}</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
