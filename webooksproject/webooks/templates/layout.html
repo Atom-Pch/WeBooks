@@ -18,39 +18,16 @@
       {% block navbar %}
       <div class="container-fluid bg-gray-900">
         <div class="px-10 flex justify-between items-center py-5 border-b">
-          <!-- Logo and Toggle Button -->
+          <!-- Logo -->
           <div class="flex items-center space-x-4">
             <div id="logo">
               <a href="{% url 'home' %}" class="text-white font-bold text-3xl"
                 >WeBooks</a
               >
             </div>
-            <!-- Navbar Toggle Button for Offcanvas (Mobile) -->
-            <button
-              data-drawer-target="offcanvasNavbar"
-              aria-controls="offcanvasNavbar"
-              data-drawer-toggle="offcanvasNavbar"
-              class="text-white lg:hidden"
-            >
-              <svg
-                class="w-6 h-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
           </div>
-
           <!-- Search Form -->
-          <div class="hidden lg:flex lg:w-2/5 space-x-5">
+          <div class="flex w-2/5 space-x-5">
             <form
               id="search-form"
               action="book-list.html"
