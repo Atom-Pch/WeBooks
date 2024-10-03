@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% block title %}WeBooks - Login{% endblock %}
+{% extends "layout.html" %} {% block title %}WeBooks - Register{% endblock %}
 {%block navbar %}{% endblock %} {% block content %}
 
 <section class="bg-gray-50 dark:bg-gray-800">
@@ -17,11 +17,11 @@
         <h1
           class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
         >
-          Log in to your account
+          Register an account
         </h1>
         <form
           class="space-y-4 md:space-y-6"
-          action="{% url 'login' %}"
+          action="{% url 'register' %}"
           method="post"
         >
           {% csrf_token %}
@@ -42,40 +42,84 @@
           </div>
           <div>
             <label
-              for="password"
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Email</label
+            >
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="reader@webooks.com"
+              required=""
+            />
+          </div>
+          <div>
+            <label
+              for="password1"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Password</label
             >
             <input
               type="password"
-              name="password"
-              id="password"
+              name="password1"
+              id="password1"
               placeholder="••••••••"
               class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required=""
             />
           </div>
-          {% if form.non_field_errors %}
+          <div>
+            <label
+              for="password2"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Confirm password</label
+            >
+            <input
+              type="password"
+              name="password2"
+              id="password2"
+              placeholder="••••••••"
+              class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required=""
+            />
+          </div>
+          {% if form.errors %} {% if form.username.errors %}
           <div
             class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert"
           >
-            {{ form.non_field_errors }}
+            {{ form.username.errors }}
           </div>
-          {% endif %}
+          {% endif %} {% if form.email.errors %}
+          <div
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            {{ form.email.errors }}
+          </div>
+          {% endif %} {% if form.password2.errors %}
+          <div
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            {{ form.password2.errors }}
+          </div>
+          {% endif %} {% endif %}
           <hr />
           <button
             type="submit"
             class="w-full text-white bg-blue-900 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
-            Log in
+            Register
           </button>
           <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-            Don't have an account with us?
+            Already have an account?
             <a
-              href="{% url 'register' %}"
+              href="{% url 'login' %}"
               class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-              >Register here!</a
+              >Log in here!</a
             >
           </p>
         </form>
