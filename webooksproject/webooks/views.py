@@ -3,6 +3,7 @@ from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from webooks.forms import RegisterForm
+from webooks.models import *
 
 class LoginView(View):
     def get(self, request):
@@ -42,5 +43,7 @@ class RegisterView(View):
 
 class HomeView(View):
     def get(self, request):
+        books = Book.objects.all().filter(status='approved')
+        context = {'books': books}
 
-        return render(request, 'home.html')
+        return render(request, 'home.html', context)
