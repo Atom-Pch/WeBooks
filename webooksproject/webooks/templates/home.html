@@ -143,11 +143,11 @@
     Welcome to the world of infinite stories
   </h1>
   <hr />
-  <div class="my-3 text-white text-3xl font-bold">Latest additions</div>
+  <h2 class="my-5 text-white text-3xl font-bold">Latest additions</h2>
   <div class="row flex flex-wrap justify-center">
     {% for book in books %}
     <div
-      class="max-w-sm border rounded-lg shadow-md bg-gray-800 border-gray-700 m-3"
+      class="max-w-xs 2xl:max-w-sm border rounded-lg shadow-md bg-gray-800 border-gray-700 m-3"
     >
       <img
         class="rounded-t-lg"
@@ -190,6 +190,16 @@
     {% empty %}
     <p class="text-white text-center">No books available</p>
     {% endfor %}
+  </div>
+  <hr class="mt-10" />
+  <h2 class="my-5 text-white text-3xl font-bold">Hot this week</h2>
+  <div class="row flex flex-wrap justify-center">
+    div
+  </div>
+  <hr class="mt-10" />
+  <h2 class="my-5 text-white text-3xl font-bold">By our writers</h2>
+  <div class="row flex flex-wrap justify-center">
+    div
   </div>
 </div>
 {% endblock content %}
