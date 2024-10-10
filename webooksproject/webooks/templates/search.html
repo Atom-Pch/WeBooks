@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %}WeBooks - Home{% endblock %}
+{%block content %}
+<div class="py-4 w-5/6 mx-auto justify-center">
+  <h1 class="m-6 text-4xl font-extrabold text-gray-100 text-center">
+    Welcome to the world of infinite stories
+  </h1>
+  <hr />
+  {% if term %}
+  <h2 class="my-5 text-white text-3xl font-bold">Search Results for "{{ term }}"</h2>
+  {% else %}
+  <h2 class="my-5 text-white text-3xl font-bold">Books in "{{ genre }}" genre</h2>
+  {% endif %}
+  <div
+    class="row flex flex-wrap justify-center"
+    id="books"
+    data-url="{% url 'search' %}"
+  >
+  {% for book in books %}
+    <div
+      class="max-w-xs 2xl:max-w-sm border rounded-lg shadow-md bg-gray-800 border-gray-700 m-3"
+    >
+      <img
+        class="rounded-t-lg"
+        {% comment %} src="{{ book.cover.url }}" {% endcomment %}
+        src="https://i.postimg.cc/FF0PLGB2/cover1.jpg"
+        alt="book cover"
+      />
+      <div class="p-5">
+        {% comment %} <a href="{% url 'book-detail' book.id %}"> {% endcomment %}
+        <a href="#">
+          <h5 class="mb-2 text-2xl font-medium tracking-tight text-white">
+            {{ book.title|truncatechars:60 }}
+          </h5>
+        </a>
+        <p class="mb-3 font-normal text-gray-400">
+          {{ book.synopsis|truncatechars:200 }}
+        </p>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-300 text-center text-xl">No books found</p>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

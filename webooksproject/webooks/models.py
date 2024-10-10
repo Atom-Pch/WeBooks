@@ -5,7 +5,6 @@ class Genre(models.Model):
     name = models.CharField(max_length=25)
 
     def __str__(self):
-
         return self.name
 
 class Author(models.Model):
@@ -27,6 +26,7 @@ class Book(models.Model):
     publication_date = models.DateField(blank=True, null=True)
     add_date = models.DateField(auto_now_add=True)
     synopsis = models.TextField(blank=True, null=True)
+    link = models.URLField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
