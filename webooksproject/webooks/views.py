@@ -18,7 +18,7 @@ class LoginView(View):
         if form.is_valid():
             user = form.get_user() 
             login(request, user)
-            return redirect('home')
+            return redirect('index')
 
         return render(request,'login.html', {"form": form})
 
@@ -26,7 +26,7 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
 
-        return redirect('home')
+        return redirect('index')
 
 class RegisterView(View):
     def get(self, request):
@@ -39,11 +39,11 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('index')
 
         return render(request, 'register.html', {"form": form})
 
-class HomeView(View):
+class IndexView(View):
     def get(self, request):
         newbooks = Book.objects.filter(
             status='approved',
@@ -56,31 +56,33 @@ class HomeView(View):
 
         ourbooks = Book.objects.filter(author__name__startswith='Webooks')
 
-        context = {
-            'newbooks': newbooks,
-            'bestbooks': bestbooks,
-            'ourbooks': ourbooks
-        }
+        context = {'newbooks': newbooks,
+                   'bestbooks': bestbooks,
+                   'ourbooks': ourbooks}
 
-        return render(request, 'home.html', context)
+        return render(request, 'index.html', context)
 
 class SearchView(View):
     def get(self, request):
         query = request.GET
         books = Book.objects.filter(title__icontains=query.get('search'))
         context = {'books': books,
-                   'term' : query.get('search')}
+                   'term': query.get('search')}
 
         return render(request, 'search.html', context)
 
 class GenreSearchView(View):
     def get(self, request, genre_id):
-        if genre_id:
-            books = Book.objects.filter(genre__id=genre_id)
-            genre = Genre.objects.get(id=genre_id)
+        books = Book.objects.filter(genre__id=genre_id)
+        genre = Genre.objects.get(id=genre_id)
+        context = {'books': books,
+                   'genre': genre}
 
-        context = {
-            'books': books,
-            'genre': genre
-        }
         return render(request, 'search.html', context)
+
+class BookView(View):
+    def get(self, request, book_id):
+        book = Book.objects.get(id=book_id)
+        context = {'book': book}
+
+        return render(request, 'book.html', context)

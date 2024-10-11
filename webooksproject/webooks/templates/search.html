@@ -1,45 +1,62 @@
-{% extends "base.html" %} {% block title %}WeBooks - Home{% endblock %}
-{%block content %}
-<div class="py-4 w-5/6 mx-auto justify-center">
-  <h1 class="m-6 text-4xl font-extrabold text-gray-100 text-center">
+{% extends "base.html" %} {%block content %}
+<div class="py-5 w-3/4 mx-auto justify-center">
+  <h1 class="mb-6 text-4xl font-extrabold text-gray-100 text-center">
     Welcome to the world of infinite stories
   </h1>
   <hr />
   {% if term %}
-  <h2 class="my-5 text-white text-3xl font-bold">Search Results for "{{ term }}"</h2>
+  <h2 class="my-5 text-white text-3xl font-bold">
+    Search Results for "{{ term }}"
+  </h2>
   {% else %}
-  <h2 class="my-5 text-white text-3xl font-bold">Books in "{{ genre }}" genre</h2>
+  <h2 class="my-5 text-white text-3xl font-bold">
+    Books in "{{ genre }}" genre
+  </h2>
   {% endif %}
   <div
     class="row flex flex-wrap justify-center"
     id="books"
     data-url="{% url 'search' %}"
   >
-  {% for book in books %}
-    <div
-      class="max-w-xs 2xl:max-w-sm border rounded-lg shadow-md bg-gray-800 border-gray-700 m-3"
-    >
-      <img
-        class="rounded-t-lg"
-        {% comment %} src="{{ book.cover.url }}" {% endcomment %}
-        src="https://i.postimg.cc/FF0PLGB2/cover1.jpg"
-        alt="book cover"
-      />
-      <div class="p-5">
-        {% comment %} <a href="{% url 'book-detail' book.id %}"> {% endcomment %}
-        <a href="#">
-          <h5 class="mb-2 text-2xl font-medium tracking-tight text-white">
-            {{ book.title|truncatechars:60 }}
+    {% for book in books %}
+    <a href="{% url 'book' book.id %}">
+      <div
+        class="transition ease-in-out hover:scale-105 hover:bg-gray-900 m-3 p-5 flex h-80 w-96 border rounded-lg shadow bg-gray-800 border-gray-700 items-center"
+      >
+        <img
+          class="object-scale-down h-80 w-40"
+          src="https://i.pinimg.com/564x/2f/73/12/2f7312d579b2a3d67c11319d5e593656.jpg"
+          alt="book cover"
+        />
+        <div class="w-full ml-5">
+          <h5 class="text-2xl font-bold tracking-tight text-white">
+            {{ book.title|truncatechars:30 }}
           </h5>
-        </a>
-        <p class="mb-3 font-normal text-gray-400">
-          {{ book.synopsis|truncatechars:200 }}
-        </p>
+          <p class="font-normal text-gray-400">
+            {{ book.synopsis|truncatechars:135 }}
+          </p>
+        </div>
       </div>
-    </div>
+    </a>
     {% empty %}
-    <p class="text-gray-300 text-center text-xl">No books found</p>
+    <p class="text-gray-300 text-center text-xl flex items-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 mr-1"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
+        />
+      </svg>
+      No books found
+    </p>
     {% endfor %}
-    </div>
+  </div>
 </div>
 {% endblock %}

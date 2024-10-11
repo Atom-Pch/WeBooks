@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+<div class="py-10 w-3/4 mx-auto justify-center">
+  <div class="grid grid-cols-3">
+    <div class="fixed size-1/5">
+      <img
+        src="https://i.pinimg.com/736x/e5/1e/2d/e51e2dd0ed40e63e8f942380f68c3571.jpg"
+        alt="book cover"
+        class="w-full rounded-lg"
+      />
+    </div>
+    <div class="col-span-1"></div>
+    <div class="col-span-2">
+      <h1 class="text-gray-100 text-3xl font-bold">{{ book.title }}</h1>
+      {% for genre in book.genre.all %}
+      <a
+        href="{% url 'search-genre' genre.id %}"
+        class="flex flex-wrap max-w-fit m-3 px-2 py-1 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-700"
+      >
+        <p class="text-sm font-medium text-cyan-100">
+          {{ genre }}
+        </p>
+      </a>
+      {% endfor %}
+      <hr class="mt-5 mb-3" />
+      <p class="text-lg font-medium text-gray-200">Author : {{ book.author }}</p>
+      <br>
+      <p class="text-lg text-gray-300">&emsp; &emsp; {{ book.synopsis }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
