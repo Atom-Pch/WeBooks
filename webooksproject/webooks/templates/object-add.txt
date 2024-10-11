@@ -1,0 +1,11 @@
+from webooks.models import *
+
+book = Book(
+    title="The Strange House (Henna Ie)",
+    publication_date='2023-01-25',
+    synopsis="I've always had a fascination with the occult; you might even call it my specialty. I've been brought in as a consultant on many supernatural and strange mysteries. But nothing could have prepared me for this house. It seemed so ordinary at first, except for that one room. It had no doors, no windows, and was tucked away, leaving anyone to think it was just a wall. I knew that there was something more to it. It shouldn't be there, it shouldn't exist, and yet... Just what is this house, and what dark secrets does it hold?",
+    link='https://thailand.kinokuniya.com/bw/9786165996754?srsltid=AfmBOorV2pdtVaEyMnNxWKZC2cFJUw0NkGCZVsjfZpSWNw5FKUeNaEpo',
+    status='approved'
+)
+book.save()
+

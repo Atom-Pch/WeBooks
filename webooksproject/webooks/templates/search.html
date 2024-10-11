@@ -10,7 +10,7 @@
   </h2>
   {% else %}
   <h2 class="my-5 text-white text-3xl font-bold">
-    Books in "{{ genre }}" genre
+    Books in "{{ genre }}" Genre
   </h2>
   {% endif %}
   <div
@@ -21,7 +21,7 @@
     {% for book in books %}
     <a href="{% url 'book' book.id %}">
       <div
-        class="transition ease-in-out hover:scale-105 hover:bg-gray-900 m-3 p-5 flex h-80 w-96 border rounded-lg shadow bg-gray-800 border-gray-700 items-center"
+        class="transition ease-in-out hover:scale-105 hover:bg-gray-900 m-3 p-5 flex h-72 w-96 border rounded-lg shadow bg-gray-800 border-gray-700 items-center"
       >
         <img
           class="object-scale-down h-80 w-40"
@@ -29,11 +29,11 @@
           alt="book cover"
         />
         <div class="w-full ml-5">
-          <h5 class="text-2xl font-bold tracking-tight text-white">
+          <h5 class="text-2xl font-bold tracking-tight text-white mb-2">
             {{ book.title|truncatechars:30 }}
           </h5>
           <p class="font-normal text-gray-400">
-            {{ book.synopsis|truncatechars:135 }}
+            {{ book.synopsis|truncatechars:120 }}
           </p>
         </div>
       </div>
