@@ -1,11 +1,12 @@
 import datetime
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
-from webooks.forms import RegisterForm
+from webooks.forms import *
 from webooks.models import *
-from django.db.models import Avg
+from django.db.models import Avg, Count
 
 class LoginView(View):
     def get(self, request):
@@ -48,13 +49,20 @@ class IndexView(View):
         newbooks = Book.objects.filter(
             status='approved',
             add_date__gte=datetime.date.today() - datetime.timedelta(days=30)
+        ).annotate(
+            avg_rating=Avg('reviews__rating'),
+            num_rating=Count('reviews')
         ).order_by('-add_date')[:10]
 
         bestbooks = Book.objects.annotate(
-            avg_rating=Avg('reviews__rating')
-        ).order_by('-avg_rating')[:10]
+            avg_rating=Avg('reviews__rating'),
+            num_rating=Count('reviews')
+        ).order_by('avg_rating')[:10]
 
-        ourbooks = Book.objects.filter(author__name__startswith='Webooks')
+        ourbooks = Book.objects.filter(author__name__startswith='Webooks').annotate(
+            avg_rating=Avg('reviews__rating'),
+            num_rating=Count('reviews')
+        )
 
         context = {'newbooks': newbooks,
                    'bestbooks': bestbooks,
@@ -82,7 +90,23 @@ class GenreSearchView(View):
 
 class BookView(View):
     def get(self, request, book_id):
-        book = Book.objects.get(id=book_id)
+        book = Book.objects.annotate(
+            avg_rating=Avg('reviews__rating'),
+            num_rating=Count('reviews')
+        ).get(id=book_id)
         context = {'book': book}
 
         return render(request, 'book.html', context)
+    
+    def post(self, request, book_id):
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.book = Book.objects.get(id=book_id)
+            review.user = UserProfile.objects.get(user=request.user)
+            review.save()
+            form.save_m2m()
+
+            return redirect('book', book_id=book_id)
+
+        return self.get(request, book_id)

@@ -22,7 +22,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.ManyToManyField(Author, related_name='books')
     genre = models.ManyToManyField(Genre, related_name='books', blank=True)
-    cover = models.ImageField(upload_to='covers/', blank=True, null=True)
+    cover = models.ImageField(blank=True, null=True)
     publication_date = models.DateField(blank=True, null=True)
     add_date = models.DateField(auto_now_add=True)
     synopsis = models.TextField(blank=True, null=True)
@@ -35,7 +35,7 @@ class Book(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=255, default='I love reading!')
-    pfp = models.ImageField(upload_to='pfps/', blank=True, null=True)
+    pfp = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username
