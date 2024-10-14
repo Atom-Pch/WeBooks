@@ -1,6 +1,5 @@
 import datetime
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout

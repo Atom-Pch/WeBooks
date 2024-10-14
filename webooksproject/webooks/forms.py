@@ -22,3 +22,9 @@ class ReviewForm(ModelForm):
     class Meta:
         model = Review
         fields = ['rating', 'comment']
+
+class RequestBookForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = '__all__'
+    
