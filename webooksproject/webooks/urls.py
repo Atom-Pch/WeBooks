@@ -1,5 +1,6 @@
 from django.urls import path
 from webooks.views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("home/", IndexView.as_view(), name="index"),
@@ -10,6 +11,8 @@ urlpatterns = [
     path('books/search-results/genre=<int:genre_id>/', GenreSearchView.as_view(), name="search-genre"),
     path("books/book=<int:book_id>/", BookView.as_view(), name="book"),
     path("home/profile/", ProfileView.as_view(), name="profile"),
+    path("home/profile/change-password/", auth_views.PasswordChangeView.as_view(template_name='change-password.html'), name="change-password"),
+    path("home/profile/change-password/done/", auth_views.PasswordChangeDoneView.as_view(template_name='change-password-done.html'), name="password_change_done"),
     path("home/book-requests/", BookRequestView.as_view(), name="book-request"),
     path("home/request-book/", RequestBookView.as_view(), name="request-book"),
     path("home/book-requests/approved-book=<int:book_id>/", BookApproveView.as_view(), name="approve-book"),

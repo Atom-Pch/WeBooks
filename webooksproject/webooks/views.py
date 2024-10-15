@@ -39,6 +39,7 @@ class RegisterView(View):
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             user = form.save()
+            UserProfile.objects.create(user=user)
             login(request, user)
             return redirect('index')
 
@@ -136,19 +137,6 @@ class BookRequestView(View, LoginRequiredMixin):
         context = {'books': books}
 
         return render(request, 'book-request.html', context)
-
-    # def post(self, request):
-    #     if not request.user.is_authenticated:
-    #         return redirect('login')
-
-    #     if not request.user.is_staff:
-    #         return redirect('index')
-
-    #     book = Book.objects.get(id=request.POST.get('book_id'))
-    #     book.status = 'approved'
-    #     book.save()
-
-    #     return redirect('book-request')
 
 class BookApproveView(View, LoginRequiredMixin):
     login_url = 'login'
