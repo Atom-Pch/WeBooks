@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block content %}
+<div class="py-10 w-1/2 mx-auto justify-center">
+  <div class="flex justify-center items-center space-x-10">
+    <div class="flex flex-col items-center justify-start">
+      <img
+        src="{{ profile.pfp }}"
+        alt="profile icon"
+        class="rounded-full size-48"
+      />
+      <p class="text-3xl font-bold text-left text-gray-200 mt-5">
+        {{ profile }}
+      </p>
+    </div>
+    <div class="bg-gray-800 rounded-lg p-5 ml-4 h-52 w-2/3">
+      <p class="text-lg text-gray-300">{{ profile.bio }}</p>
+    </div>
+  </div>
+  <div class="flex justify-center my-2">
+    <a
+      href="#"
+      class="flex items-center bg-amber-700 font-medium px-4 py-2 rounded-lg text-gray-200 hover:bg-amber-600 focus:ring-2 focus:outline-none focus:ring-amber-500"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 inline mr-2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+        />
+      </svg>
+      Edit
+    </a>
+  </div>
+  <hr class="my-5" />
+  <h1 class="text-3xl font-bold text-gray-100">My shelves</h1>
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for shelf in profile.shelves.all %}
+    <div
+      class="flex flex-col items-center justify-start bg-gray-700 rounded-lg p-2"
+    >
+      <p class="text-2xl font-bold text-left text-gray-200">{{ shelf.name }}</p>
+      <div class="flex space-x-4 mt-2">
+        {% for book in shelf.books.all|slice:":4" %}
+        <a href="{% url 'book' book.id %}">
+          <img
+            src="{{ book.cover.url }}"
+            alt="book cover"
+            class="rounded-lg h-32 w-20"
+          />
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

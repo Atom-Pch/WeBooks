@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
     <link
@@ -95,7 +95,8 @@
                 required=""
               />
               <button
-                class="px-4 py-2 bg-gray-800 text-white rounded-r-full flex items-center"
+                type="submit"
+                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-r-full flex items-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -117,9 +118,10 @@
             <!-- Dropdown -->
             <div class="relative flex items-center">
               <button
+                type="button"
                 id="GenresDropdown"
                 data-dropdown-toggle="dropdownGenres"
-                class="text-white uppercase font-semibold Dropdown flex items-center"
+                class="text-white hover:text-gray-300 uppercase font-semibold Dropdown flex items-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -168,10 +170,24 @@
           <!-- Register & Login -->
           <div class="flex space-x-10">
             {% if user.is_authenticated %}
+              {% if user.is_staff %}
+              <a class="text-white hover:text-gray-300 uppercase font-semibold px-3 py-2"
+                href="{% url 'book-request' %}">
+                Book Requests
+              </a>
+              {% else %}
+            <a
+              class="text-white hover:text-gray-300 uppercase font-semibold px-3 py-2"
+              href="{% url 'request-book' %}"
+            >
+              Request a book
+            </a>
+            {% endif %}
             <button
+              type="button"
               id="dropdownDefaultButton"
               data-dropdown-toggle="dropdownLogout"
-              class="text-white uppercase font-semibold Dropdown inline-flex items-center"
+              class="text-white hover:text-gray-300 uppercase font-semibold Dropdown inline-flex items-center"
             >
               {{ user.username }}
               <svg
@@ -199,7 +215,10 @@
                 aria-labelledby="dropdownDefaultButton"
               >
                 <li>
-                  <a class="block px-4 py-3 hover:bg-gray-100">
+                  <a
+                    class="block px-4 py-3 hover:bg-gray-100"
+                    href="{% url 'profile' %}"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -214,7 +233,7 @@
                         d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
                       />
                     </svg>
-                    Bio
+                    Profile
                   </a>
                 </li>
                 <li class="border-b border-gray-200"></li>

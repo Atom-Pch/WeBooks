@@ -14,7 +14,7 @@ class RegisterForm(UserCreationForm):
     def clean_email(self):
         reg_email = self.cleaned_data.get('email')
         if User.objects.filter(email=reg_email).exists():
-            raise ValidationError("A user with that email already exists, try logging in?")
+            raise ValidationError("A user with that email already exists")
 
         return reg_email
 
@@ -26,5 +26,13 @@ class ReviewForm(ModelForm):
 class RequestBookForm(ModelForm):
     class Meta:
         model = Book
-        fields = '__all__'
-    
+        fields = ['title', 'link']
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        req_title = cleaned_data.get('title')
+        req_link = cleaned_data.get('link')
+
+        if Book.objects.filter(title=req_title).exists() or Book.objects.filter(link=req_link).exists():
+            raise ValidationError("Book already requested/exists")

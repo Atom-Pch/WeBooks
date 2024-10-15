@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout
 from webooks.forms import *
 from webooks.models import *
 from django.db.models import Avg, Count
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class LoginView(View):
     def get(self, request):
@@ -56,7 +57,7 @@ class IndexView(View):
         bestbooks = Book.objects.annotate(
             avg_rating=Avg('reviews__rating'),
             num_rating=Count('reviews')
-        ).order_by('avg_rating')[:10]
+        ).order_by('-avg_rating')[:10]
 
         ourbooks = Book.objects.filter(author__name__startswith='Webooks').annotate(
             avg_rating=Avg('reviews__rating'),
@@ -109,3 +110,87 @@ class BookView(View):
             return redirect('book', book_id=book_id)
 
         return self.get(request, book_id)
+
+class ProfileView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login') 
+
+        profile = UserProfile.objects.get(user=request.user)
+        context = {'profile': profile}
+
+        return render(request, 'profile.html', context)
+
+class BookRequestView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        books = Book.objects.filter(status='pending')
+        context = {'books': books}
+
+        return render(request, 'book-request.html', context)
+
+    # def post(self, request):
+    #     if not request.user.is_authenticated:
+    #         return redirect('login')
+
+    #     if not request.user.is_staff:
+    #         return redirect('index')
+
+    #     book = Book.objects.get(id=request.POST.get('book_id'))
+    #     book.status = 'approved'
+    #     book.save()
+
+    #     return redirect('book-request')
+
+class BookApproveView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request, book_id):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        book = Book.objects.get(id=book_id)
+        book.status = 'approved'
+        book.save()
+
+        return redirect('book-request')
+
+class BookRejectView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request, book_id):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        book = Book.objects.get(id=book_id)
+        book.status = 'rejected'
+        book.save()
+
+        return redirect('book-request')
+
+class RequestBookView(View):
+    def get(self, request):
+        form = RequestBookForm()
+
+        return render(request, 'request-book.html', {'form': form})
+
+    def post(self, request):
+        form = RequestBookForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+
+            return redirect('index')
+
+        return render(request, 'request-book.html', {'form': form})
