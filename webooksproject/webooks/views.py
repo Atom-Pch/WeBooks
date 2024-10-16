@@ -56,10 +56,10 @@ class IndexView(View):
             num_rating=Count('reviews', filter=Q(reviews__status='ok'))
         ).order_by('-add_date')[:10]
 
-        bestbooks = Book.objects.filter(status='approved', reviews__rating__isnull=False).annotate(
+        bestbooks = Book.objects.annotate(
             avg_rating=Avg('reviews__rating', filter=Q(reviews__status='ok')),
             num_rating=Count('reviews', filter=Q(reviews__status='ok'))
-        ).order_by('-avg_rating')[:10]
+        ).filter(status='approved', avg_rating__gt=0).order_by('-avg_rating')[:10]
 
         context = {'newbooks': newbooks,
                    'bestbooks': bestbooks
@@ -214,7 +214,7 @@ class AuthorAddView(View, LoginRequiredMixin):
         if form.is_valid():
             form.save()
 
-            return redirect('approve-book', book_id=form.instance.id)
+            return redirect('add-author')
 
         return render(request, 'add-author.html', {'form': form})
 
@@ -242,7 +242,7 @@ class HideReviewView(View, LoginRequiredMixin):
         if not request.user.is_staff:
             return redirect('index')
 
-        review = Review.objects.get(id=review_id)
+        review = get_object_or_404(Review, id=review_id)
         review.status = 'hidden'
         review.save()
 
@@ -269,3 +269,107 @@ class RequestBookView(View, LoginRequiredMixin):
             return redirect('index')
 
         return render(request, 'request-book.html', {'form': form})
+
+class AddShelfView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        form = AddShelfForm()
+
+        return render(request, 'add-shelf.html', {'form': form})
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+            
+        form = AddShelfForm(data=request.POST)
+        if form.is_valid():
+            shelf = form.save(commit=False)
+            shelf.user = UserProfile.objects.get(user=request.user)
+            shelf.save()
+            form.save_m2m()
+
+            return redirect('profile')
+
+        return render(request, 'add-shelf.html', {'form': form})
+
+class EditBookView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request, book_id):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        book = get_object_or_404(Book, id=book_id)
+        form = EditBookForm(instance=book)
+        authors = Author.objects.all().order_by('name')
+
+        context = {'form': form,
+                   'authors': authors}
+
+        return render(request, 'edit-book.html', context)
+
+    def post(self, request, book_id):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        book = get_object_or_404(Book, id=book_id)
+        form = EditBookForm(data=request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+
+            return redirect('book', book_id=book_id)
+
+        return render(request, 'edit-book.html', {'form': form})
+    
+class RemoveBookView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request, book_id):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        book = Book.objects.get(id=book_id)
+        book.status = 'removed'
+        book.save()
+
+        return redirect('index')
+
+class AddBookView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        authors = Author.objects.all().order_by('name')
+        form = ApproveBookForm()
+
+        context = {'form': form,
+                   'authors': authors}
+
+        return render(request, 'add-book.html', context)
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        form = ApproveBookForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+
+            return redirect('index')
+
+        return render(request, 'add-book.html', {'form': form})

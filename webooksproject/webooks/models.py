@@ -18,6 +18,7 @@ class Book(models.Model):
         ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+        ('removed', 'Removed'),
     ]
 
     title = models.CharField(max_length=255)
@@ -54,7 +55,7 @@ class Review(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ok')
 
 class Shelf(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='shelves')
     name = models.CharField(max_length=50, default="My Shelf")
 
 class ShelfBook(models.Model):

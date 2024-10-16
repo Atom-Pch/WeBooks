@@ -21,4 +21,8 @@ urlpatterns = [
     path("home/book-requests/reject-book/<int:book_id>/", BookRejectView.as_view(), name="reject-book"),
     path("home/profile/edit/", EditProfileView.as_view(), name="edit-profile"),
     path("books/book/review/<int:book_id>/hide-review/<int:review_id>/", HideReviewView.as_view(), name="hide-review"),
+    path("home/profile/shelf/add-shelf/", AddShelfView.as_view(), name="add-shelf"),
+    path("books/book/edit/<int:book_id>/", EditBookView.as_view(), name="edit-book"),
+    path("books/book/remove/<int:book_id>/", RemoveBookView.as_view(), name="remove-book"),
+    path("books/add-book/", AddBookView.as_view(), name="add-book"),
 ]

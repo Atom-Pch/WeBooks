@@ -7,18 +7,18 @@
       class="flex items-center justify-between p-5 border-b rounded-t border-gray-500"
     >
       <h3 class="text-xl font-semibold text-white text-center">
-        Approve Book Request
+        Add a Book
       </h3>
     </div>
     <div class="p-4">
       <div class="flex justify-center items-center">
         <img
-          src="{{ form.instance.cover }}"
+          src=""
           alt="book cover"
           class="object-scale-down size-96 mb-10"
         />
       </div>
-      <form action="{% url 'approve-book' form.instance.id %}" method="post">
+      <form action="{% url 'add-book' %}" method="post">
         {% csrf_token %}
         <div class="mb-5">
           <label for="title" class="block text-sm text-white mb-2">
@@ -29,7 +29,6 @@
             name="title"
             id="title"
             class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
-            value="{{ form.instance.title }}"
             required
           />
         </div>
@@ -92,7 +91,6 @@
             id="cover"
             class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
             required
-            value="{{ form.instance.cover }}"
             oninput="updateImage(this)"
           />
         </div>
@@ -117,7 +115,6 @@
             name="link"
             id="link"
             class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
-            value="{{ form.instance.link }}"
             required
           />
         </div>
@@ -148,7 +145,7 @@
           type="submit"
           class="mt-5 w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-300"
         >
-          Approve this book
+          Add book
         </button>
       </form>
     </div>

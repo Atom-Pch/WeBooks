@@ -44,6 +44,11 @@ class ApproveBookForm(ModelForm):
         model = Book
         fields = '__all__'
 
+class EditBookForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'genre', 'cover', 'publication_date', 'synopsis', 'link']
+
 class AddAuthorForm(ModelForm):
     class Meta:
         model = Author
@@ -63,3 +68,8 @@ class EditProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ['bio', 'pfp']
+
+class AddShelfForm(ModelForm):
+    class Meta:
+        model = Shelf
+        fields = ['name']
