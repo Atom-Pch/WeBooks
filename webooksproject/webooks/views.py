@@ -7,6 +7,7 @@ from webooks.forms import *
 from webooks.models import *
 from django.db.models import Avg, Count
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 class LoginView(View):
     def get(self, request):
@@ -51,13 +52,13 @@ class IndexView(View):
             status='approved',
             add_date__gte=datetime.date.today() - datetime.timedelta(days=30)
         ).annotate(
-            avg_rating=Avg('reviews__rating'),
-            num_rating=Count('reviews')
+            avg_rating=Avg('reviews__rating', filter=Q(reviews__status='ok')),
+            num_rating=Count('reviews', filter=Q(reviews__status='ok'))
         ).order_by('-add_date')[:10]
 
         bestbooks = Book.objects.filter(status='approved', reviews__rating__isnull=False).annotate(
-            avg_rating=Avg('reviews__rating'),
-            num_rating=Count('reviews')
+            avg_rating=Avg('reviews__rating', filter=Q(reviews__status='ok')),
+            num_rating=Count('reviews', filter=Q(reviews__status='ok'))
         ).order_by('-avg_rating')[:10]
 
         context = {'newbooks': newbooks,
@@ -80,17 +81,21 @@ class GenreSearchView(View):
         books = Book.objects.filter(genre__id=genre_id)
         genre = Genre.objects.get(id=genre_id)
         context = {'books': books,
-                   'genre': genre}
+                   'genre': genre
+                   }
 
         return render(request, 'search.html', context)
 
 class BookView(View):
     def get(self, request, book_id):
         book = Book.objects.annotate(
-            avg_rating=Avg('reviews__rating'),
-            num_rating=Count('reviews')
+            avg_rating=Avg('reviews__rating', filter=Q(reviews__status='ok')),
+            num_rating=Count('reviews', filter=Q(reviews__status='ok'))
         ).get(id=book_id)
-        context = {'book': book}
+        context = {'book': book,
+                   'reviews': book.reviews.filter(status='ok').order_by('-reviewed_at'),
+                   'genres': book.genre.order_by('name')
+                   }
 
         return render(request, 'book.html', context)
     
@@ -119,6 +124,27 @@ class ProfileView(View, LoginRequiredMixin):
         context = {'profile': profile}
 
         return render(request, 'profile.html', context)
+    
+class EditProfileView(LoginRequiredMixin, View):
+    login_url = 'login'
+
+    def get(self, request):
+        # Get the UserProfile of the currently authenticated user
+        user_profile = get_object_or_404(UserProfile, user=request.user)
+        form = EditProfileForm(instance=user_profile)
+
+        return render(request, 'edit-profile.html', {'form': form})
+
+    def post(self, request):
+        # Get the UserProfile of the currently authenticated user
+        user_profile = get_object_or_404(UserProfile, user=request.user)
+        form = EditProfileForm(request.POST, instance=user_profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+
+        return render(request, 'edit-profile.html', {'form': form})
 
 class BookRequestView(View, LoginRequiredMixin):
     login_url = 'login'
@@ -206,6 +232,21 @@ class BookRejectView(View, LoginRequiredMixin):
         book.save()
 
         return redirect('book-request')
+
+class HideReviewView(View, LoginRequiredMixin):
+    login_url = 'login'
+
+    def get(self, request, book_id, review_id):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        if not request.user.is_staff:
+            return redirect('index')
+
+        review = Review.objects.get(id=review_id)
+        review.status = 'hidden'
+        review.save()
+
+        return redirect('book', book_id=book_id)
 
 class RequestBookView(View, LoginRequiredMixin):
     login_url = 'login'

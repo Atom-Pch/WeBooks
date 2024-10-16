@@ -1,8 +1,8 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="py-10 w-3/4 mx-auto justify-center">
-  <div class="relative rounded-lg shadow bg-gray-800 w-1/2 justify-center mx-auto">
+  <div
+    class="relative rounded-lg shadow bg-gray-800 w-1/2 justify-center mx-auto"
+  >
     <div
       class="flex items-center justify-between p-5 border-b rounded-t border-gray-500"
     >
@@ -39,13 +39,13 @@
             required
           />
         </div>
-        {% if form.non_field_errors %} 
-          <div
-            class="p-4 mb-4 text-sm text-red-400 rounded-lg bg-gray-900"
-            role="alert"
-          >
-            {{ form.non_field_errors }}
-          </div>
+        {% if form.non_field_errors %}
+        <div
+          class="p-4 mb-4 text-sm text-red-400 rounded-lg bg-gray-900"
+          role="alert"
+        >
+          {{ form.non_field_errors }}
+        </div>
         {% endif %}
         <button
           type="submit"

@@ -42,11 +42,16 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Review(models.Model):
+    STATUS_CHOICES = [
+        ('ok', 'OK'),
+        ('hidden', 'Hidden'),
+    ]
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='reviews')
     rating = models.PositiveSmallIntegerField()
     comment = models.TextField(blank=True, null=True)
     reviewed_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ok')
 
 class Shelf(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

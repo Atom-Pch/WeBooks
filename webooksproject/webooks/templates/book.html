@@ -33,7 +33,7 @@
     <div class="col-span-1"></div>
     <div class="col-span-2">
       <h1 class="text-gray-100 text-3xl font-extrabold">{{ book.title }}</h1>
-      {% for genre in book.genre.all|dictsort:"name" %}
+      {% for genre in genres %}
       <a
         href="{% url 'search-genre' genre.id %}"
         class="transition ease-in-out hover:scale-105 inline-flex flex flex-wrap max-w-fit mt-3 mx-2 px-2 py-1 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-700 focus:ring-1 focus:ring-cyan-100"
@@ -171,6 +171,7 @@
                       </p>
                     </div>
                     <textarea
+                      type="text"
                       name="comment"
                       id="comment"
                       class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
@@ -195,7 +196,7 @@
         {% endif %}
       </div>
       <div class="overflow-auto max-h-[53rem] border-t-2 border-t-gray-500">
-        {% for review in book.reviews.all|dictsortreversed:"reviewed_at" %}
+        {% for review in reviews %}
         <div
           class="max-h-none mb-5 flex flex-col justify-center bg-gray-800 p-5 rounded-lg shadow"
         >
@@ -218,7 +219,7 @@
             </p>
           </div>
           <div
-            class="flex flex-col items-center justify-center bg-gray-600 p-3 rounded-lg shadow mb-3"
+            class="flex flex-col items-start justify-start bg-gray-600 p-3 rounded-lg shadow mb-3"
           >
             <p class="text-lg text-gray-300">{{ review.comment }}</p>
           </div>

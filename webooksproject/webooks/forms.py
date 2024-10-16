@@ -58,3 +58,8 @@ class AddAuthorForm(ModelForm):
             raise ValidationError("Author already exists")
         
         return cleaned_data
+
+class EditProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['bio', 'pfp']
