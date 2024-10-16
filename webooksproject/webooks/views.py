@@ -70,7 +70,10 @@ class IndexView(View):
 class SearchView(View):
     def get(self, request):
         query = request.GET
-        books = Book.objects.filter(title__icontains=query.get('search'))
+        books = Book.objects.annotate(
+            avg_rating=Avg('reviews__rating', filter=Q(reviews__status='ok')),
+            num_rating=Count('reviews', filter=Q(reviews__status='ok'))
+        ).filter(status='approved', title__icontains=query.get('search'))
         context = {'books': books,
                    'term': query.get('search')}
 
@@ -78,7 +81,10 @@ class SearchView(View):
 
 class GenreSearchView(View):
     def get(self, request, genre_id):
-        books = Book.objects.filter(genre__id=genre_id)
+        books = Book.objects.annotate(
+            avg_rating=Avg('reviews__rating', filter=Q(reviews__status='ok')),
+            num_rating=Count('reviews', filter=Q(reviews__status='ok'))
+        ).filter(status='approved', genre__id=genre_id)
         genre = Genre.objects.get(id=genre_id)
         context = {'books': books,
                    'genre': genre
