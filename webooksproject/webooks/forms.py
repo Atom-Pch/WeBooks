@@ -36,3 +36,25 @@ class RequestBookForm(ModelForm):
 
         if Book.objects.filter(title=req_title).exists() or Book.objects.filter(link=req_link).exists():
             raise ValidationError("Book already requested/exists")
+
+        return cleaned_data
+
+class ApproveBookForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+class AddAuthorForm(ModelForm):
+    class Meta:
+        model = Author
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        add_name = cleaned_data.get('name')
+        
+        if Author.objects.filter(name=add_name).exists():
+            raise ValidationError("Author already exists")
+        
+        return cleaned_data

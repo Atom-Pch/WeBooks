@@ -169,13 +169,14 @@
           </div>
           <!-- Register & Login -->
           <div class="flex space-x-10">
-            {% if user.is_authenticated %}
-              {% if user.is_staff %}
-              <a class="text-white hover:text-gray-300 uppercase font-semibold px-3 py-2"
-                href="{% url 'book-request' %}">
-                Book Requests
-              </a>
-              {% else %}
+            {% if user.is_authenticated %} {% if user.is_staff %}
+            <a
+              class="text-white hover:text-gray-300 uppercase font-semibold px-3 py-2"
+              href="{% url 'book-request' %}"
+            >
+              Book Requests
+            </a>
+            {% else %}
             <a
               class="text-white hover:text-gray-300 uppercase font-semibold px-3 py-2"
               href="{% url 'request-book' %}"
@@ -236,6 +237,30 @@
                     Profile
                   </a>
                 </li>
+                {% if request.user.is_staff %}
+                <li>
+                  <a
+                    class="block px-4 py-3 hover:bg-gray-100"
+                    href="{% url 'add-author' %}"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="size-6 inline"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                    Add author
+                  </a>
+                </li>
+                {% endif %}
                 <li class="border-b border-gray-200"></li>
                 <li>
                   <a

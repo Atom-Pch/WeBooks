@@ -3,7 +3,7 @@
   <div class="grid grid-cols-3">
     <div class="fixed size-1/5">
       <img
-        src="https://i.pinimg.com/736x/e5/1e/2d/e51e2dd0ed40e63e8f942380f68c3571.jpg"
+        src="{{ book.cover }}"
         alt="book cover"
         class="w-full rounded-lg"
       />
@@ -86,7 +86,7 @@
           </svg>
           Write a Review
         </button>
-
+        <!-- Review part -->
         <!-- Main modal -->
         <div
           id="review-modal"
@@ -129,7 +129,7 @@
               </div>
               <!-- Modal body -->
               <div class="p-4">
-                <form action="{% url 'book' book.id %}" method="post">
+                <form action="{% url 'add-review' book.id %}" method="post">
                   {% csrf_token %}
                   <div
                     class="flex justify-between items-center align-middle mb-3"

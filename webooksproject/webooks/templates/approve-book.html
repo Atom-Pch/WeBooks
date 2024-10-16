@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% block content %}
+<div class="py-10 w-3/4 mx-auto justify-center">
+  <div
+    class="relative rounded-lg shadow bg-gray-800 w-2/3 justify-center mx-auto"
+  >
+    <div
+      class="flex items-center justify-between p-5 border-b rounded-t border-gray-500"
+    >
+      <h3 class="text-xl font-semibold text-white text-center">
+        Approve Book Request
+    </div>
+    <div class="p-4">
+      <div class="flex justify-center items-center">
+        <img
+          src="{{ form.instance.cover }}"
+          alt="book cover"
+          class="object-scale-down size-96 mb-10"
+        />
+      </div>
+      <form action="{% url 'approve-book' form.instance.id %}" method="post">
+        {% csrf_token %}
+        <div class="mb-5">
+          <label for="title" class="block text-sm text-white mb-2">
+            Book Title
+          </label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+            value="{{ form.instance.title }}"
+            required
+          />
+        </div>
+        <div class="mb-5">
+            <label for="authors" class="block text-sm text-white mb-2">
+              Book Author
+            </label>
+            <div class="flex justify-between space-x-4 items-center mx-2">
+              <select
+              multiple
+              id="authors"
+              name="author"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+              >
+                <option value="" selected disabled>Choose authors</option>
+                {% for author in authors %}
+                <option value="{{ author.id }}">{{ author }}</option>
+                {% endfor %}
+              </select>
+              <a
+              class="size-fit text-white focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-700 hover:bg-blue-600 focus:ring-blue-300"
+              href = "{% url 'add-author' %}"
+              >
+                New
+              </a>
+            </div>
+        </div>
+        <div class="mb-5">
+            <label for="genres" class="block text-sm text-white mb-2">
+              Book Genres
+            </label>
+              <div class="grid grid-cols-2 gap-2 mx-2">
+                {% for genre in genres %}
+                <div class="flex items-center">
+                  <input
+                    id="genre-{{ genre.id }}"
+                    type="checkbox"
+                    name="genre"
+                    value="{{ genre.id }}"
+                    class="w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
+                  />
+                  <label for="genre-{{ genre.id }}" class="ms-2 text-sm font-medium text-white">
+                    {{ genre.name }}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+        </div>
+        <div class="mb-5">
+            <label for="cover" class="block text-sm text-white mb-2">
+              Book Cover
+            </label>
+            <input
+              type="text"
+              name="cover"
+              id="cover"
+              class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+              required
+              value="{{ form.instance.cover }}"
+              oninput="updateImage(this)"
+            />
+        </div>
+        <div class="mb-5">
+            <label for="publication" class="block text-sm text-white mb-2">
+              Book Publication Date
+            </label>
+            <input
+              type="date"
+              name="publication_date"
+              id="publication"
+              class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+              required
+            />
+        </div>
+        <div class="mb-5">
+          <label for="link" class="block text-sm text-white mb-2">
+            Purchase Link
+          </label>
+          <input
+            type="text"
+            name="link"
+            id="link"
+            class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+            value="{{ form.instance.link }}"
+            required
+          />
+        </div>
+        <div class="mb-5">
+            <label for="synopsis" class="block text-sm text-white mb-2">
+              Book Synopsis
+            </label>
+            <textarea
+              type="text"
+              name="synopsis"
+              id="synopsis"
+              class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+              required
+              rows="4"
+            ></textarea>
+        </div>
+        <input type="hidden" name="status" value="approved">
+        <input type="hidden" name="add_date" value="{% now 'Y-m-d' %}">
+        {% if form.errors %} 
+        <div
+          class="p-4 mb-4 text-sm text-red-400 rounded-lg bg-gray-900"
+          role="alert"
+        >
+          {{ form.errors }}
+        </div>
+        {% endif %}
+        <button
+          type="submit"
+          class="mt-5 w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-300"
+        >
+          Approve this book
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateImage(input) {
+    const cover = document.querySelector('img[alt="book cover"]');
+    cover.src = input.value;
+  }
+</script>
+{% endblock %}

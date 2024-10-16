@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block content %}
+<div class="py-10 w-3/4 mx-auto justify-center">
+  <div
+    class="relative rounded-lg shadow bg-gray-800 w-1/2 justify-center mx-auto"
+  >
+    <div
+      class="flex items-center justify-between p-5 border-b rounded-t border-gray-500"
+    >
+      <h3 class="text-xl font-semibold text-white text-center">
+        Add a new author
+      </h3>
+    </div>
+    <div class="p-4">
+      <form action="{% url 'add-author' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="block text-sm text-white mb-2">
+            New Author Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            class="border text-md rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+            placeholder="John Doe"
+            required
+          />
+        </div>
+        {% if form.name.errors %}
+        <div
+          class="p-4 mb-4 text-sm text-red-400 rounded-lg bg-gray-900"
+          role="alert"
+        >
+          {{ form.name.errors }}
+        </div>
+        {% endif %}
+        {% if form.non_field_errors %}
+        <div
+          class="p-4 mb-4 text-sm text-red-400 rounded-lg bg-gray-900"
+          role="alert"
+        >
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+        <button
+          type="submit"
+          class="mt-5 w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-indigo-700 hover:bg-indigo-500 focus:ring-indigo-300"
+        >
+          Add Author
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

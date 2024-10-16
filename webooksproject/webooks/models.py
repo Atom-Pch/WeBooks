@@ -23,7 +23,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.ManyToManyField(Author, related_name='books')
     genre = models.ManyToManyField(Genre, related_name='books', blank=True)
-    cover = models.ImageField(blank=True, null=True)
+    cover = models.TextField(blank=True, null=True, default='https://shorturl.at/HIdup')
     publication_date = models.DateField(blank=True, null=True)
     add_date = models.DateField(auto_now_add=True)
     synopsis = models.TextField(blank=True, null=True)
@@ -36,7 +36,7 @@ class Book(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=255, default='I love reading!')
-    pfp = models.ImageField(blank=True, null=True, default='https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg')
+    pfp = models.TextField(blank=True, null=True, default='https://shorturl.at/QYuov')
 
     def __str__(self):
         return self.user.username
